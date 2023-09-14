@@ -225,7 +225,7 @@ colnames(new_df)[49] <- "dem3_ethnicity_other"
 colnames(new_df)[50] <- "dem4_employment_status"
 colnames(new_df)[51] <- "dem5_occupation"
 ```
-```{r}
+```{r new code}
 
 ```
 
