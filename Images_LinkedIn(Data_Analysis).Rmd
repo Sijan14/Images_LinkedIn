@@ -1,0 +1,240 @@
+---
+title: "Images_and_LinkedIn_Profile(Data_Analysis)"
+author: "Allama Ikbal Sijan"
+date: "2023-09-12"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r Installing & Loacding packages, include=FALSE}
+install.packages("tidyverse")
+install.packages("psych")
+install.packages("dplyr")
+install.packages("janitor")
+library(tidyverse)
+library(psych)
+library(dplyr)
+library(janitor)
+```
+
+```{r Loading dataset, message=FALSE}
+df <- read_csv("Data_Clean.csv")
+df <- df %>% 
+  select(!c(StartDate, EndDate, IPAddress, Status, 
+            RecordedDate, LocationLatitude, LocationLongitude, DistributionChannel,Q1))
+
+```
+
+```{r Cleaning dataset}
+df <- df %>% slice(-2)
+```
+
+
+```{r Asian man}
+asian_man_df <- df %>%
+  select(ResponseId, Column1, `Duration (in seconds)`, Progress, UserLanguage, Finished, Attention_check, starts_with("Asian_Man"), starts_with("Demographics"))
+
+asian_man_df <- asian_man_df %>% 
+  filter(Asian_Man_1 != "N/A")
+
+colnames(asian_man_df) <- asian_man_df[1,]
+asian_man_df <- asian_man_df[-1, ]
+colnames(asian_man_df)[7] = "Attention_check"
+
+#don't know how to fucking filter out the NA
+```
+
+```{r Asian woman}
+asian_woman_df <- df %>%
+  select(ResponseId, Column1, `Duration (in seconds)`, Progress, UserLanguage, Finished, Attention_check, starts_with("Asian_Woman"), starts_with("Demographics"))
+
+asian_woman_df <- asian_woman_df %>% 
+  filter(Asian_Woman_1 != "N/A")
+
+colnames(asian_woman_df) <- asian_woman_df[1,]
+asian_woman_df <- asian_woman_df[-1, ]
+colnames(asian_woman_df)[7] = "Attention_check"
+```
+
+```{r Black Man}
+black_man_df <- df %>%
+  select(ResponseId, Column1, `Duration (in seconds)`, Progress, UserLanguage, Finished, Attention_check, starts_with("Black_Man"), starts_with("Demographics"))
+
+black_man_df <- black_man_df %>% 
+  filter(Black_Man_1 != "N/A")
+
+colnames(black_man_df) <- black_man_df[1,]
+black_man_df <- black_man_df[-1, ]
+colnames(black_man_df)[7] = "Attention_check"
+```
+
+```{r Black Woman}
+black_woman_df <- df %>%
+  select(ResponseId, Column1, `Duration (in seconds)`, Progress, UserLanguage, Finished, Attention_check, starts_with("Black_Woman"), starts_with("Demographics"))
+
+black_woman_df <- black_woman_df %>% 
+  filter(Black_Woman_1 != "N/A")
+
+colnames(black_woman_df) <- black_woman_df[1,]
+black_woman_df <- black_woman_df[-1, ]
+colnames(black_woman_df)[7] = "Attention_check"
+```
+
+```{r Blight Man}
+blight_man_df <- df %>%
+  select(ResponseId, Column1, `Duration (in seconds)`, Progress, UserLanguage, Finished, Attention_check, starts_with("Blight_Man"), starts_with("Demographics"))
+
+blight_man_df <- blight_man_df %>% 
+  filter(Blight_Man_1 != "N/A")
+
+colnames(blight_man_df) <- blight_man_df[1,]
+blight_man_df <- blight_man_df[-1, ]
+colnames(blight_man_df)[7] = "Attention_check"
+```
+
+```{r Blight Woman}
+blight_woman_df <- df %>%
+  select(ResponseId, Column1, `Duration (in seconds)`, Progress, UserLanguage, Finished, Attention_check, starts_with("Blight_Woman"), starts_with("Demographics"))
+
+blight_woman_df <- blight_woman_df %>% 
+  filter(Blight_Woman_1 != "N/A")
+
+colnames(blight_woman_df) <- blight_woman_df[1,]
+blight_woman_df <- blight_woman_df[-1, ]
+colnames(blight_woman_df)[7] = "Attention_check"
+```
+
+```{r Wasian Man}
+wasian_man_df <- df %>%
+  select(ResponseId, Column1, `Duration (in seconds)`, Progress, UserLanguage, Finished, Attention_check, starts_with("Wasian_Man"), starts_with("Demographics"))
+
+wasian_man_df <- wasian_man_df %>% 
+  filter(Wasian_Man_1 != "N/A")
+
+colnames(wasian_man_df) <- wasian_man_df[1,]
+wasian_man_df <- wasian_man_df[-1, ]
+colnames(wasian_man_df)[7] = "Attention_check"
+```
+
+```{r Wasian Woman}
+wasian_woman_df <- df %>%
+  select(ResponseId, Column1, `Duration (in seconds)`, Progress, UserLanguage, Finished, Attention_check, starts_with("Wasian_Woman"), starts_with("Demographics"))
+
+wasian_woman_df <- wasian_woman_df %>% 
+  filter(Wasian_Woman_1 != "N/A")
+
+colnames(wasian_woman_df) <- wasian_woman_df[1,]
+wasian_woman_df <- wasian_woman_df[-1, ]
+colnames(wasian_woman_df)[7] = "Attention_check"
+```
+
+```{r White Man}
+white_man_df <- df %>%
+  select(ResponseId, Column1, `Duration (in seconds)`, Progress, UserLanguage, Finished, Attention_check, starts_with("White_Man"), starts_with("Demographics"))
+
+white_man_df <- white_man_df %>% 
+  filter(White_Man_1 != "N/A")
+
+colnames(white_man_df) <- white_man_df[1,]
+white_man_df <- white_man_df[-1, ]
+colnames(white_man_df)[7] = "Attention_check"
+```
+
+```{r White Woman}
+white_woman_df <- df %>%
+  select(ResponseId, Column1, `Duration (in seconds)`, Progress, UserLanguage, Finished, Attention_check, starts_with("White_Woman"), starts_with("Demographics"))
+
+white_woman_df <- white_woman_df %>% 
+  filter(White_Woman_1 != "N/A")
+
+colnames(white_woman_df) <- white_woman_df[1,]
+white_woman_df <- white_woman_df[-1, ]
+colnames(white_woman_df)[7] = "Attention_check"
+```
+
+```{r stacking the datasets}
+new_df <- rbind(asian_man_df, asian_woman_df,
+                black_man_df, black_woman_df,
+                blight_man_df, blight_woman_df,
+                wasian_man_df, wasian_woman_df,
+                white_man_df, white_woman_df)
+```
+```{r data cleaning & renaming}
+new_df = new_df[,!(names(new_df) %in% c("Timing - First Click","Timing - Last Click"))]
+
+colnames(new_df)[8] <- "timing_page_submit_LP"
+colnames(new_df)[9] <- "click_count_LP"
+# new_df2$`Duration (in seconds)` <- as.numeric(new_df2$`Duration (in seconds)`)
+
+colnames(new_df)[10] <- "item1_leader"
+colnames(new_df)[11] <- "timing_leader"
+colnames(new_df)[12] <- "click_count_leader"
+
+colnames(new_df)[13] <- "item2_independent"
+colnames(new_df)[14] <- "timing_independent"
+colnames(new_df)[15] <- "click_count_independent"
+
+colnames(new_df)[16] <- "item3_ambitious"
+colnames(new_df)[17] <- "timing_ambitious"
+colnames(new_df)[18] <- "click_count_ambitious"
+
+colnames(new_df)[19] <- "item4_loyal"
+colnames(new_df)[20] <- "timing_loyal"
+colnames(new_df)[21] <- "click_count_loyal"
+
+colnames(new_df)[22] <- "item5_sensitive"
+colnames(new_df)[23] <- "timing_sensitive"
+colnames(new_df)[24] <- "click_count_sensitive"
+
+colnames(new_df)[25] <- "item6_warm"
+colnames(new_df)[26] <- "timing_warm"
+colnames(new_df)[27] <- "click_count_warm"
+
+colnames(new_df)[28] <- "item7_compassionate"
+colnames(new_df)[29] <- "timing_compassionate"
+colnames(new_df)[30] <- "click_count_compassionate"
+
+colnames(new_df)[31] <- "item8_adaptable"
+colnames(new_df)[32] <- "timing_adaptable"
+colnames(new_df)[33] <- "click_count_adaptable"
+
+colnames(new_df)[34] <- "item9_sincere"
+colnames(new_df)[35] <- "timing_sincere"
+colnames(new_df)[36] <- "click_count_sincere"
+
+colnames(new_df)[37] <- "item10_reliable"
+colnames(new_df)[38] <- "timing_reliable"
+colnames(new_df)[39] <- "click_count_reliable"
+
+colnames(new_df)[40] <- "item11_truthful"
+colnames(new_df)[41] <- "timing_truthful"
+colnames(new_df)[42] <- "click_count_truthful"
+
+colnames(new_df)[43] <- "item12_race"
+colnames(new_df)[44] <- "timing_race"
+colnames(new_df)[45] <- "click_count_race"
+
+colnames(new_df)[46] <- "dem1_age"
+colnames(new_df)[47] <- "dem2_gender"
+colnames(new_df)[48] <- "dem3_ethnicity"
+colnames(new_df)[49] <- "dem3_ethnicity_other"
+
+colnames(new_df)[50] <- "dem4_employment_status"
+colnames(new_df)[51] <- "dem5_occupation"
+```
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
