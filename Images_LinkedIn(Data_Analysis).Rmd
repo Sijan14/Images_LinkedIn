@@ -2,14 +2,13 @@
 title: "Images_and_LinkedIn_Profile(Data_Analysis)"
 author: "Allama Ikbal Sijan"
 date: "2023-09-12"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
 ```{r Installing & Loacding packages, include=FALSE}
+chooseCRANmirror(ind = 1)
 install.packages("tidyverse")
 install.packages("psych")
 install.packages("dplyr")
@@ -42,8 +41,6 @@ asian_man_df <- asian_man_df %>%
 colnames(asian_man_df) <- asian_man_df[1,]
 asian_man_df <- asian_man_df[-1, ]
 colnames(asian_man_df)[7] = "Attention_check"
-
-#don't know how to fucking filter out the NA
 ```
 
 ```{r Asian woman}
@@ -167,7 +164,6 @@ new_df = new_df[,!(names(new_df) %in% c("Timing - First Click","Timing - Last Cl
 
 colnames(new_df)[8] <- "timing_page_submit_LP"
 colnames(new_df)[9] <- "click_count_LP"
-# new_df2$`Duration (in seconds)` <- as.numeric(new_df2$`Duration (in seconds)`)
 
 colnames(new_df)[10] <- "item1_leader"
 colnames(new_df)[11] <- "timing_leader"
@@ -224,23 +220,23 @@ colnames(new_df)[49] <- "dem3_ethnicity_other"
 
 colnames(new_df)[50] <- "dem4_employment_status"
 colnames(new_df)[51] <- "dem5_occupation"
+
 ```
 
 ```{r removing participants, warning=FALSE}
 new_df <- new_df %>% 
   filter(Finished == TRUE & Attention_check == "Digital Marketing Role")
 ```
+
 ```{r factors & numeric, warning=FALSE}
-fac_var <- c("Group", "dem2_gender", "dem3_ethnicity", "dem4_employment_status")
+fac_var <- c("Group", "item12_race", "dem2_gender", "dem3_ethnicity", "dem4_employment_status")
 new_df <- new_df %>% 
   mutate(across(fac_var, as.factor))
 
-num_var <- c("Duration (in seconds)", "timing_page_submit_LP", "click_count_LP","item1_leader", "timing_leader", "click_count_leader", "item2_independent", "timing_independent", "click_count_independent", "item3_ambitious", "timing_ambitious", "click_count_ambitious", "item4_loyal", "timing_loyal", "click_count_loyal", "item5_sensitive", "timing_sensitive", "click_count_sensitive", "item6_warm", "timing_warm", "click_count_warm", "item7_compassionate", "timing_compassionate", "click_count_compassionate", "item8_adaptable", "timing_adaptable", "click_count_adaptable", "item9_sincere", "timing_sincere", "click_count_sincere", "item10_reliable", "timing_reliable", "click_count_reliable", "item11_truthful", "timing_truthful", "click_count_truthful", "item12_race", "timing_race", "click_count_race", "dem1_age")
+num_var <- c("Duration (in seconds)", "timing_page_submit_LP", "click_count_LP","item1_leader", "timing_leader", "click_count_leader", "item2_independent", "timing_independent", "click_count_independent", "item3_ambitious", "timing_ambitious", "click_count_ambitious", "item4_loyal", "timing_loyal", "click_count_loyal", "item5_sensitive", "timing_sensitive", "click_count_sensitive", "item6_warm", "timing_warm", "click_count_warm", "item7_compassionate", "timing_compassionate", "click_count_compassionate", "item8_adaptable", "timing_adaptable", "click_count_adaptable", "item9_sincere", "timing_sincere", "click_count_sincere", "item10_reliable", "timing_reliable", "click_count_reliable", "item11_truthful", "timing_truthful", "click_count_truthful", "timing_race", "click_count_race", "dem1_age")
 new_df <- new_df %>% 
   mutate(across(num_var, as.numeric))
 ```
-
-
 
 ## Descriptive statistics
 ```{r mean, sd & distribution}
@@ -263,7 +259,7 @@ new_df <- new_df %>%
            timing_loyal + timing_sensitive + timing_warm + timing_compassionate +
            timing_adaptable + timing_sincere + timing_reliable + timing_truthful)
 ```
-```{r}
+```{r group difference in response time, echo=TRUE}
 total_response_time_bygroup <- new_df %>% 
   group_by(Group) %>% 
   summarise(Mean = mean(total_response_time), Sd = sd(total_response_time))
@@ -285,6 +281,29 @@ item_wise_response_time_bygroup <- new_df %>%
 item_wise_response_time_bygroup
 
 ```
+```{r Hypothesis 1}
+H1_m <- aov(masculinity ~ Group, data = new_df)
+summary(H1_m)
+# ANOVA indicates no difference among groups but still running Post-hoc
+TukeyHSD(H1_m)
+
+H1_f <- aov(femininity ~ Group, data = new_df)
+summary(H1_f)
+TukeyHSD(H1_f)
+```
+```{r Hypothesis 2}
+H2 <- manova(cbind(masculinity, femininity) ~ Group, data = new_df)
+summary(H2)
+```
+
+```{r Hypothesis 3: testing for response time}
+eval_time <- aov(total_response_time ~ Group, data = new_df)
+summary(eval_time)
+
+model <- lm(total_response_time ~ Group, data = new_df)
+summary(model)
+```
+
 
 
 
