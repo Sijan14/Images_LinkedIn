@@ -154,7 +154,7 @@ white_woman_df <- white_woman_df[-1, ]
 colnames(white_woman_df)[7] = "Attention_check"
 ```
 
-```{r stacking the datasets}
+```{r stacking the datasets, warning=FALSE}
 new_df <- rbind(asian_man_df, asian_woman_df,
                 black_man_df, black_woman_df,
                 blight_man_df, blight_woman_df,
@@ -162,7 +162,7 @@ new_df <- rbind(asian_man_df, asian_woman_df,
                 white_man_df, white_woman_df)
 ```
 
-```{r data cleaning & renaming}
+```{r data cleaning & renaming, warning=FALSE}
 new_df = new_df[,!(names(new_df) %in% c("Timing - First Click","Timing - Last Click"))]
 
 colnames(new_df)[8] <- "timing_page_submit_LP"
@@ -226,7 +226,7 @@ colnames(new_df)[50] <- "dem4_employment_status"
 colnames(new_df)[51] <- "dem5_occupation"
 ```
 
-```{r removing participants}
+```{r removing participants, warning=FALSE}
 new_df <- new_df %>% 
   filter(Finished == TRUE & Attention_check == "Digital Marketing Role")
 ```
@@ -245,11 +245,45 @@ new_df <- new_df %>%
 ## Descriptive statistics
 ```{r mean, sd & distribution}
 describe(new_df)
+```
+```{r aggregation}
+new_df <- new_df %>% 
+  mutate(masculinity = (item1_leader + item2_independent + item3_ambitious) / 3,
+         femininity = (item4_loyal + item5_sensitive + item6_warm + item7_compassionate) / 4,
+         neutral = (item8_adaptable + item9_sincere + item10_reliable + item11_truthful) / 4)
 
-new_df %>% 
+aggregated_scale <- new_df[ , c("masculinity", "femininity", "neutral")]
+alpha(aggregated_scale)
+
+## all the aggregated scales highly correlate with the overall scale (highest corr neutral = 0.93)
+## so dropping neutral would have the most impact on alpha value, while dropping masculinity or feminity scale would still result in a fair alpha value (alpha >.8)
+
+new_df <- new_df %>% 
+  mutate(total_response_time = timing_leader + timing_independent + timing_ambitious + 
+           timing_loyal + timing_sensitive + timing_warm + timing_compassionate +
+           timing_adaptable + timing_sincere + timing_reliable + timing_truthful)
+```
+```{r}
+total_response_time_bygroup <- new_df %>% 
   group_by(Group) %>% 
-  summarise(Mean = mean(timing_page_submit_LP), SD = sd(timing_page_submit_LP))
-  
+  summarise(Mean = mean(total_response_time), Sd = sd(total_response_time))
+total_response_time_bygroup
+
+item_wise_response_time_bygroup <- new_df %>% 
+  group_by(Group) %>% 
+  summarise(Mean_item1_leader = mean(item1_leader), Sd_item1_leader = sd(item1_leader),
+            Mean_item2_independent = mean(item2_independent), Sd_item2_independent = sd(item2_independent),
+            Mean_item3_ambitious = mean(item3_ambitious), Sd_item3_ambitious = sd(item3_ambitious),
+            Mean_item4_loyal = mean(item4_loyal), Sd_item4_loyal = sd(item4_loyal),
+            Mean_item5_sensitive = mean(item5_sensitive), Sd_item5_sensitive = sd(item5_sensitive),
+            Mean_item6_warm = mean(item6_warm), Sd_item6_warm = sd(item6_warm),
+            Mean_item7_compassionate = mean(item7_compassionate), Sd_item7_compassionate = sd(item7_compassionate),
+            Mean_item8_adaptable = mean(item8_adaptable), Sd_item8_adaptable = sd(item8_adaptable),
+            Mean_item9_sincere = mean(item9_sincere), Sd_item9_sincere = sd(item9_sincere),
+            Mean_item10_reliable = mean(item10_reliable), Sd_item10_reliable = sd(item10_reliable),
+            Mean_item11_truthful = mean(item11_truthful), Sd_item11_truthful = sd(item11_truthful))
+item_wise_response_time_bygroup
+
 ```
 
 
