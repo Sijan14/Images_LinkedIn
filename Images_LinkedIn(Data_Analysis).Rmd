@@ -267,6 +267,119 @@ total_response_time_bygroup
 
 item_wise_response_time_bygroup <- new_df %>% 
   group_by(Group) %>% 
+  summarise(Mean_timing_leader = mean(timing_leader), Sd_timing_leader = sd(timing_leader),
+            Mean_timing_independent = mean(timing_independent), Sd_timing_independent = sd(timing_independent),
+            Mean_timing_ambitious = mean(timing_ambitious), Sd_timing_ambitious = sd(timing_ambitious),
+            Mean_timing_loyal = mean(timing_loyal), Sd_timing_loyal = sd(timing_loyal),
+            Mean_timing_sensitive = mean(timing_sensitive), Sd_timing_sensitive = sd(timing_sensitive),
+            Mean_timing_warm = mean(timing_warm), Sd_timing_warm = sd(timing_warm),
+            Mean_timing_compassionate = mean(timing_compassionate), Sd_timing_compassionate = sd(timing_compassionate),
+            Mean_timing_adaptable = mean(timing_adaptable), Sd_timing_adaptable = sd(timing_adaptable),
+            Mean_timing_sincere = mean(timing_sincere), Sd_timing_sincere = sd(timing_sincere),
+            Mean_timing_reliable = mean(timing_reliable), Sd_timing_reliable = sd(timing_reliable),
+            Mean_timing_truthful = mean(timing_truthful), Sd_timing_truthful = sd(timing_truthful))
+item_wise_response_time_bygroup
+
+## histogram
+total_response_time_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean - Sd, ymax = Mean + Sd),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item1 leader
+item_wise_response_time_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_timing_leader)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_timing_leader - Sd_timing_leader, ymax = Mean_timing_leader + Sd_timing_leader),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+#item2 independent
+item_wise_response_time_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_timing_independent)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_timing_independent - Sd_timing_independent, ymax = Mean_timing_independent + Sd_timing_independent),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item3 ambitious
+item_wise_response_time_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_timing_ambitious)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_timing_ambitious - Sd_timing_ambitious, ymax = Mean_timing_ambitious + Sd_timing_ambitious),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item4 loyal
+item_wise_response_time_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_timing_loyal)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_timing_loyal - Sd_timing_loyal, ymax = Mean_timing_loyal + Sd_timing_loyal),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item5 sensitive
+item_wise_response_time_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_timing_sensitive)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_timing_sensitive - Sd_timing_sensitive, ymax = Mean_timing_sensitive + Sd_timing_sensitive),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item6 warm
+item_wise_response_time_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_timing_warm)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_timing_warm - Sd_timing_warm, ymax = Mean_timing_warm + Sd_timing_warm),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item7 compassionate
+item_wise_response_time_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_timing_compassionate)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_timing_compassionate - Sd_timing_compassionate, ymax = Mean_timing_compassionate + Sd_timing_compassionate),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item8 adaptable
+item_wise_response_time_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_timing_adaptable)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_timing_adaptable - Sd_timing_adaptable, ymax = Mean_timing_adaptable + Sd_timing_adaptable),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item9 sincere
+item_wise_response_time_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_timing_sincere)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_timing_sincere - Sd_timing_sincere, ymax = Mean_timing_sincere + Sd_timing_sincere),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item10 reliable
+item_wise_response_time_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_timing_reliable)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_timing_reliable - Sd_timing_reliable, ymax = Mean_timing_reliable + Sd_timing_reliable),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item11 truthful
+item_wise_response_time_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_timing_truthful)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_timing_truthful - Sd_timing_truthful, ymax = Mean_timing_truthful + Sd_timing_truthful),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+```{r average item score by group}
+mean_item_rating_bygroup <- new_df %>% 
+  group_by(Group) %>% 
   summarise(Mean_item1_leader = mean(item1_leader), Sd_item1_leader = sd(item1_leader),
             Mean_item2_independent = mean(item2_independent), Sd_item2_independent = sd(item2_independent),
             Mean_item3_ambitious = mean(item3_ambitious), Sd_item3_ambitious = sd(item3_ambitious),
@@ -278,9 +391,151 @@ item_wise_response_time_bygroup <- new_df %>%
             Mean_item9_sincere = mean(item9_sincere), Sd_item9_sincere = sd(item9_sincere),
             Mean_item10_reliable = mean(item10_reliable), Sd_item10_reliable = sd(item10_reliable),
             Mean_item11_truthful = mean(item11_truthful), Sd_item11_truthful = sd(item11_truthful))
-item_wise_response_time_bygroup
+mean_item_rating_bygroup
+
+## histogram
+mean_item_rating_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_item1_leader)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_item1_leader - Sd_item1_leader, ymax = Mean_item1_leader + Sd_item1_leader),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  ylim(0, 8) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item1 leader
+mean_item_rating_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_item2_independent)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_item2_independent - Sd_item2_independent, ymax = Mean_item2_independent + Sd_item2_independent),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  ylim(0, 8) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+#item2 independent
+mean_item_rating_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_item2_independent)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_item2_independent - Sd_item2_independent, ymax = Mean_item2_independent + Sd_item2_independent),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  ylim(0, 8) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item3 ambitious
+mean_item_rating_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_item3_ambitious)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_item3_ambitious - Sd_item3_ambitious, ymax = Mean_item3_ambitious + Sd_item3_ambitious),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  ylim(0, 8) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item4 loyal
+mean_item_rating_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_item4_loyal)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_item4_loyal - Sd_item4_loyal, ymax = Mean_item4_loyal + Sd_item4_loyal),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  ylim(0, 8) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item5 sensitive
+mean_item_rating_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_item5_sensitive)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_item5_sensitive - Sd_item5_sensitive, ymax = Mean_item5_sensitive + Sd_item5_sensitive),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  ylim(0, 8) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item6 warm
+mean_item_rating_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_item6_warm)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_item6_warm - Sd_item6_warm, ymax = Mean_item6_warm + Sd_item6_warm),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  ylim(0, 8) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item7 compassionate
+mean_item_rating_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_item7_compassionate)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_item7_compassionate - Sd_item7_compassionate, ymax = Mean_item7_compassionate + Sd_item7_compassionate),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  ylim(0, 8) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item8 adaptable
+mean_item_rating_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_item8_adaptable)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_item8_adaptable - Sd_item8_adaptable, ymax = Mean_item8_adaptable + Sd_item8_adaptable),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  ylim(0, 8) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item9 sincere
+mean_item_rating_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_item9_sincere)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_item9_sincere - Sd_item9_sincere, ymax = Mean_item9_sincere + Sd_item9_sincere),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  ylim(0, 8) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item10 reliable
+mean_item_rating_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_item10_reliable)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_item10_reliable - Sd_item10_reliable, ymax = Mean_item10_reliable + Sd_item10_reliable),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  ylim(0, 8) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item11 truthful
+mean_item_rating_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_item11_truthful)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_item11_truthful - Sd_item11_truthful, ymax = Mean_item11_truthful + Sd_item11_truthful),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  ylim(0, 8) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 ```
+```{r click count}
+new_df <- new_df %>% 
+  mutate(sum_click_count = click_count_leader + click_count_independent + click_count_ambitious + click_count_loyal +
+                      click_count_sensitive + click_count_warm + click_count_compassionate + click_count_adaptable +
+                      click_count_sincere + click_count_reliable + click_count_truthful)
+
+Mean_total_click_count <- new_df %>% 
+  group_by(Group) %>% 
+  summarise(Mean =  mean(sum_click_count), Sd = sd(sum_click_count))
+Mean_total_click_count
+
+Mean_total_click_count %>% 
+  ggplot(aes(x = Group, y = Mean)) +
+  geom_col() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+Mean_click_count <- new_df %>% 
+  group_by(Group) %>% 
+  summarise(mean_cc_leader = mean(click_count_leader), sd_cc_leader = sd(click_count_leader),
+            mean_cc_independent = mean(click_count_independent), sd_cc_independent = sd(click_count_independent),
+            mean_cc_ambitious = mean(click_count_ambitious), sd_cc_ambitious = sd(click_count_ambitious),
+            mean_cc_loyal = mean(click_count_loyal), sd_cc_loyal = sd(click_count_loyal),
+            mean_cc_sensitive = mean(click_count_sensitive), sd_cc_sensitive = sd(click_count_sensitive),
+            mean_cc_warm = mean(click_count_warm), sd_cc_warm = sd(click_count_warm),
+            mean_cc_compassionate = mean(click_count_compassionate), sd_cc_compassionate = sd(click_count_compassionate),
+            mean_cc_adaptable = mean(click_count_adaptable), sd_cc_adaptable = sd(click_count_adaptable),
+            mean_cc_sincere = mean(click_count_sincere), sd_cc_sincere = sd(click_count_sincere),
+            mean_cc_reliable = mean(click_count_reliable), sd_cc_reliable = sd(click_count_reliable),
+            mean_cc_truthful = mean(click_count_truthful), sd_cc_truthful = sd(click_count_truthful))
+
+Mean_click_count
+```
+
+
 ```{r Hypothesis 1}
 H1_m <- aov(masculinity ~ Group, data = new_df)
 summary(H1_m)
@@ -297,14 +552,76 @@ summary(H2)
 ```
 
 ```{r Hypothesis 3: testing for response time}
-eval_time <- aov(total_response_time ~ Group, data = new_df)
-summary(eval_time)
+## masculinity & femininity ratings
+H3_m <- aov(masculinity ~ Group, data = new_df)
+summary(H3_m)
+# ANOVA indicates no difference among groups but still running Post-hoc
+TukeyHSD(H3_m)
 
-model <- lm(total_response_time ~ Group, data = new_df)
-summary(model)
+H3_f <- aov(femininity ~ Group, data = new_df)
+summary(H3_f)
+TukeyHSD(H3_f)
+
+## total response time difference
+total_response_time_anova <- aov(total_response_time ~ Group, data = new_df)
+summary(total_response_time_anova)
+TukeyHSD(total_response_time_anova) 
+
+## item-wise response time difference
+item1_response_time_aonva <- aov(timing_leader ~ Group, data = new_df)
+summary(item1_response_time_aonva)
+
+item2_response_time_aonva <- aov(timing_independent ~ Group, data = new_df)
+summary(item2_response_time_aonva)
+
+item3_response_time_aonva <- aov(timing_ambitious ~ Group, data = new_df)
+summary(item3_response_time_aonva)
+
+item4_response_time_aonva <- aov(timing_loyal ~ Group, data = new_df)
+summary(item4_response_time_aonva)
+
+item5_response_time_aonva <- aov(timing_sensitive ~ Group, data = new_df)
+summary(item5_response_time_aonva)
+
+item6_response_time_aonva <- aov(timing_warm ~ Group, data = new_df)
+summary(item6_response_time_aonva)
+
+item7_response_time_aonva <- aov(timing_compassionate ~ Group, data = new_df)
+summary(item7_response_time_aonva)
+
+item8_response_time_aonva <- aov(timing_adaptable ~ Group, data = new_df)
+summary(item8_response_time_aonva)
+
+item9_response_time_aonva <- aov(timing_sincere ~ Group, data = new_df)
+summary(item9_response_time_aonva)
+
+item10_response_time_aonva <- aov(timing_reliable ~ Group, data = new_df)
+summary(item10_response_time_aonva)
+
+item11_response_time_aonva <- aov(timing_truthful ~ Group, data = new_df)
+summary(item11_response_time_aonva)
 ```
+# Hypothesis 3 was not supported
+# H3a: No difference in masculinity or femininity rating among groups
+# H3b: No difference in response time
 
+```{r}
+lm_df <- new_df %>% 
+  mutate(eth = as.factor(dem3_ethnicity),
+         emp_st = as.factor(dem4_employment_status),
+         tot_res_time = total_response_time,
+         age = dem1_age,
+         gender = dem2_gender)
 
+model <- lm(tot_res_time ~ Group * age * gender * eth * emp_st, data = lm_df)
+summary(model)
+
+model1 <- lm(tot_res_time ~ Group * age * gender, data = lm_df)
+summary(model1)
+
+model2 <- lm(tot_res_time ~ Group * eth * emp_st, data = lm_df)
+summary(model2)
+```
 
 
 
