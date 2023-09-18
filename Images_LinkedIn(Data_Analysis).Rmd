@@ -12,9 +12,13 @@ chooseCRANmirror(ind = 1)
 install.packages("tidyverse")
 install.packages("psych")
 install.packages("dplyr")
+install.packages("stringr")
+install.packages("ggcorrplot")
 library(tidyverse)
 library(psych)
 library(dplyr)
+library(stringr)
+library(ggcorrplot)
 ```
 
 ## Data Wrangling & Cleaning
@@ -259,6 +263,8 @@ new_df <- new_df %>%
            timing_loyal + timing_sensitive + timing_warm + timing_compassionate +
            timing_adaptable + timing_sincere + timing_reliable + timing_truthful)
 ```
+## Data Visualizations
+
 ```{r group difference in response time, echo=TRUE}
 total_response_time_bygroup <- new_df %>% 
   group_by(Group) %>% 
@@ -534,7 +540,7 @@ Mean_click_count <- new_df %>%
 
 Mean_click_count
 ```
-
+## Hypothesis Testing
 
 ```{r Hypothesis 1}
 H1_m <- aov(masculinity ~ Group, data = new_df)
@@ -560,12 +566,10 @@ TukeyHSD(H3_m)
 
 H3_f <- aov(femininity ~ Group, data = new_df)
 summary(H3_f)
-TukeyHSD(H3_f)
 
 ## total response time difference
 total_response_time_anova <- aov(total_response_time ~ Group, data = new_df)
 summary(total_response_time_anova)
-TukeyHSD(total_response_time_anova) 
 
 ## item-wise response time difference
 item1_response_time_aonva <- aov(timing_leader ~ Group, data = new_df)
@@ -600,12 +604,13 @@ summary(item10_response_time_aonva)
 
 item11_response_time_aonva <- aov(timing_truthful ~ Group, data = new_df)
 summary(item11_response_time_aonva)
-```
+
 # Hypothesis 3 was not supported
 # H3a: No difference in masculinity or femininity rating among groups
 # H3b: No difference in response time
+```
 
-```{r}
+```{r Resgression Models for response time, include=FALSE}
 lm_df <- new_df %>% 
   mutate(eth = as.factor(dem3_ethnicity),
          emp_st = as.factor(dem4_employment_status),
@@ -616,11 +621,61 @@ lm_df <- new_df %>%
 model <- lm(tot_res_time ~ Group * age * gender * eth * emp_st, data = lm_df)
 summary(model)
 
+# Include = FALSE as the report becomes super long and hard to read if this model runs
+# The only significant interaction in this model = Caucasian : Self-employed * (.05)
+
+```
+
+```{r More Regression Models}
 model1 <- lm(tot_res_time ~ Group * age * gender, data = lm_df)
 summary(model1)
 
 model2 <- lm(tot_res_time ~ Group * eth * emp_st, data = lm_df)
 summary(model2)
+
+# There are quite a few significant interactions in model2
+```
+
+## Additional Analyses
+```{r Grouping into gender & race}
+
+# Recoding
+new_df <- new_df %>%
+  mutate(Gender = case_when(
+    str_detect(Group, "Woman$") ~ "Female",
+    str_detect(Group, "Man$") ~ "Male"
+  ))
+
+new_df <- new_df %>% 
+  mutate(Race = case_when(
+    str_detect(Group, "^Asian") ~ "Asian",
+    str_detect(Group, "^Black") ~ "Black",
+    str_detect(Group, "^White") ~ "White",
+    str_detect(Group, "^Blight") ~ "Biracial",
+    str_detect(Group, "^Wasian") ~ "Biracial"
+  ))
+
+# Anova
+anova_masculinity <- aov(masculinity ~ Race + Gender, data = new_df)
+summary(anova_masculinity)
+
+anova_femininity <- aov(femininity ~ Race + Gender, data = new_df)
+summary(anova_femininity)
+
+# Still not significant but the p = .08 for Race
+TukeyHSD(anova_femininity)
+  
+```
+```{r correlation matrix}
+scales <- new_df[ , c("item1_leader", "item2_independent", "item3_ambitious", "item4_loyal", "item5_sensitive",
+                      "item6_warm", "item7_compassionate", "item8_adaptable", "item9_sincere", "item10_reliable",
+                      "item11_truthful")]
+corr_matrix <- cor(scales, method = "pearson")
+corr_matrix
+
+ggcorrplot(corr_matrix, method = 'square', 
+           type = 'lower',
+           colors = c("red", "white", "blue"))
 ```
 
 
