@@ -1,0 +1,1249 @@
+---
+title: "Images_and_LinkedIn_Profile(Data_Analysis)"
+author: "Allama Ikbal Sijan"
+date: "2023-09-12"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r Installing & Loacding packages, include=FALSE}
+chooseCRANmirror(ind = 1)
+install.packages("tidyverse")
+install.packages("psych")
+install.packages("dplyr")
+install.packages("stringr")
+install.packages("ggcorrplot")
+install.packages("ggplot2")
+install.packages("broom")
+install.packages("multcomp")
+install.packages("tidyr")
+library(tidyverse)
+library(psych)
+library(dplyr)
+library(stringr)
+library(ggcorrplot)
+library(tidyr)
+library(ggplot2)
+library(broom)
+library(multcomp)
+```
+
+## Data Wrangling & Cleaning
+```{r Loading dataset, message=FALSE}
+df <- read_csv("Data_Clean.csv")
+df <- df %>% 
+  dplyr::select(!c(StartDate, EndDate, IPAddress, Status, 
+            RecordedDate, LocationLatitude, LocationLongitude, DistributionChannel,Q1))
+
+```
+
+```{r Cleaning dataset}
+df <- df %>% slice(-2)
+```
+
+
+```{r Asian man}
+asian_man_df <- df %>%
+  dplyr::select(ResponseId, Column1, `Duration (in seconds)`, Progress, UserLanguage, Finished, Attention_check, starts_with("Asian_Man"), starts_with("Demographics"))
+
+asian_man_df <- asian_man_df %>% 
+  filter(Asian_Man_1 != "N/A")
+
+colnames(asian_man_df) <- asian_man_df[1,]
+asian_man_df <- asian_man_df[-1, ]
+colnames(asian_man_df)[7] = "Attention_check"
+```
+
+```{r Asian woman}
+asian_woman_df <- df %>%
+  dplyr::select(ResponseId, Column1, `Duration (in seconds)`, Progress, UserLanguage, Finished, Attention_check, starts_with("Asian_Woman"), starts_with("Demographics"))
+
+asian_woman_df <- asian_woman_df %>% 
+  filter(Asian_Woman_1 != "N/A")
+
+colnames(asian_woman_df) <- asian_woman_df[1,]
+asian_woman_df <- asian_woman_df[-1, ]
+colnames(asian_woman_df)[7] = "Attention_check"
+```
+
+```{r Black Man}
+black_man_df <- df %>%
+  dplyr::select(ResponseId, Column1, `Duration (in seconds)`, Progress, UserLanguage, Finished, Attention_check, starts_with("Black_Man"), starts_with("Demographics"))
+
+black_man_df <- black_man_df %>% 
+  filter(Black_Man_1 != "N/A")
+
+colnames(black_man_df) <- black_man_df[1,]
+black_man_df <- black_man_df[-1, ]
+colnames(black_man_df)[7] = "Attention_check"
+```
+
+```{r Black Woman}
+black_woman_df <- df %>%
+  dplyr::select(ResponseId, Column1, `Duration (in seconds)`, Progress, UserLanguage, Finished, Attention_check, starts_with("Black_Woman"), starts_with("Demographics"))
+
+black_woman_df <- black_woman_df %>% 
+  filter(Black_Woman_1 != "N/A")
+
+colnames(black_woman_df) <- black_woman_df[1,]
+black_woman_df <- black_woman_df[-1, ]
+colnames(black_woman_df)[7] = "Attention_check"
+```
+
+```{r Blight Man}
+blight_man_df <- df %>%
+  dplyr::select(ResponseId, Column1, `Duration (in seconds)`, Progress, UserLanguage, Finished, Attention_check, starts_with("Blight_Man"), starts_with("Demographics"))
+
+blight_man_df <- blight_man_df %>% 
+  filter(Blight_Man_1 != "N/A")
+
+colnames(blight_man_df) <- blight_man_df[1,]
+blight_man_df <- blight_man_df[-1, ]
+colnames(blight_man_df)[7] = "Attention_check"
+```
+
+```{r Blight Woman}
+blight_woman_df <- df %>%
+  dplyr::select(ResponseId, Column1, `Duration (in seconds)`, Progress, UserLanguage, Finished, Attention_check, starts_with("Blight_Woman"), starts_with("Demographics"))
+
+blight_woman_df <- blight_woman_df %>% 
+  filter(Blight_Woman_1 != "N/A")
+
+colnames(blight_woman_df) <- blight_woman_df[1,]
+blight_woman_df <- blight_woman_df[-1, ]
+colnames(blight_woman_df)[7] = "Attention_check"
+```
+
+```{r Wasian Man}
+wasian_man_df <- df %>%
+  dplyr::select(ResponseId, Column1, `Duration (in seconds)`, Progress, UserLanguage, Finished, Attention_check, starts_with("Wasian_Man"), starts_with("Demographics"))
+
+wasian_man_df <- wasian_man_df %>% 
+  filter(Wasian_Man_1 != "N/A")
+
+colnames(wasian_man_df) <- wasian_man_df[1,]
+wasian_man_df <- wasian_man_df[-1, ]
+colnames(wasian_man_df)[7] = "Attention_check"
+```
+
+```{r Wasian Woman}
+wasian_woman_df <- df %>%
+  dplyr::select(ResponseId, Column1, `Duration (in seconds)`, Progress, UserLanguage, Finished, Attention_check, starts_with("Wasian_Woman"), starts_with("Demographics"))
+
+wasian_woman_df <- wasian_woman_df %>% 
+  filter(Wasian_Woman_1 != "N/A")
+
+colnames(wasian_woman_df) <- wasian_woman_df[1,]
+wasian_woman_df <- wasian_woman_df[-1, ]
+colnames(wasian_woman_df)[7] = "Attention_check"
+```
+
+```{r White Man}
+white_man_df <- df %>%
+  dplyr::select(ResponseId, Column1, `Duration (in seconds)`, Progress, UserLanguage, Finished, Attention_check, starts_with("White_Man"), starts_with("Demographics"))
+
+white_man_df <- white_man_df %>% 
+  filter(White_Man_1 != "N/A")
+
+colnames(white_man_df) <- white_man_df[1,]
+white_man_df <- white_man_df[-1, ]
+colnames(white_man_df)[7] = "Attention_check"
+```
+
+```{r White Woman}
+white_woman_df <- df %>%
+  dplyr::select(ResponseId, Column1, `Duration (in seconds)`, Progress, UserLanguage, Finished, Attention_check, starts_with("White_Woman"), starts_with("Demographics"))
+
+white_woman_df <- white_woman_df %>% 
+  filter(White_Woman_1 != "N/A")
+
+colnames(white_woman_df) <- white_woman_df[1,]
+white_woman_df <- white_woman_df[-1, ]
+colnames(white_woman_df)[7] = "Attention_check"
+```
+
+```{r stacking the datasets, warning=FALSE}
+new_df <- rbind(asian_man_df, asian_woman_df,
+                black_man_df, black_woman_df,
+                blight_man_df, blight_woman_df,
+                wasian_man_df, wasian_woman_df,
+                white_man_df, white_woman_df)
+```
+
+```{r data cleaning & renaming, warning=FALSE}
+new_df = new_df[,!(names(new_df) %in% c("Timing - First Click","Timing - Last Click"))]
+
+colnames(new_df)[8] <- "timing_page_submit_LP"
+colnames(new_df)[9] <- "click_count_LP"
+
+colnames(new_df)[10] <- "item1_leader"
+colnames(new_df)[11] <- "timing_leader"
+colnames(new_df)[12] <- "click_count_leader"
+
+colnames(new_df)[13] <- "item2_independent"
+colnames(new_df)[14] <- "timing_independent"
+colnames(new_df)[15] <- "click_count_independent"
+
+colnames(new_df)[16] <- "item3_ambitious"
+colnames(new_df)[17] <- "timing_ambitious"
+colnames(new_df)[18] <- "click_count_ambitious"
+
+colnames(new_df)[19] <- "item4_loyal"
+colnames(new_df)[20] <- "timing_loyal"
+colnames(new_df)[21] <- "click_count_loyal"
+
+colnames(new_df)[22] <- "item5_sensitive"
+colnames(new_df)[23] <- "timing_sensitive"
+colnames(new_df)[24] <- "click_count_sensitive"
+
+colnames(new_df)[25] <- "item6_warm"
+colnames(new_df)[26] <- "timing_warm"
+colnames(new_df)[27] <- "click_count_warm"
+
+colnames(new_df)[28] <- "item7_compassionate"
+colnames(new_df)[29] <- "timing_compassionate"
+colnames(new_df)[30] <- "click_count_compassionate"
+
+colnames(new_df)[31] <- "item8_adaptable"
+colnames(new_df)[32] <- "timing_adaptable"
+colnames(new_df)[33] <- "click_count_adaptable"
+
+colnames(new_df)[34] <- "item9_sincere"
+colnames(new_df)[35] <- "timing_sincere"
+colnames(new_df)[36] <- "click_count_sincere"
+
+colnames(new_df)[37] <- "item10_reliable"
+colnames(new_df)[38] <- "timing_reliable"
+colnames(new_df)[39] <- "click_count_reliable"
+
+colnames(new_df)[40] <- "item11_truthful"
+colnames(new_df)[41] <- "timing_truthful"
+colnames(new_df)[42] <- "click_count_truthful"
+
+colnames(new_df)[43] <- "item12_race"
+colnames(new_df)[44] <- "timing_race"
+colnames(new_df)[45] <- "click_count_race"
+
+colnames(new_df)[46] <- "dem1_age"
+colnames(new_df)[47] <- "dem2_gender"
+colnames(new_df)[48] <- "dem3_ethnicity"
+colnames(new_df)[49] <- "dem3_ethnicity_other"
+
+colnames(new_df)[50] <- "dem4_employment_status"
+colnames(new_df)[51] <- "dem5_occupation"
+
+```
+
+```{r removing participants, warning=FALSE}
+new_df <- new_df %>% 
+  filter(Finished == TRUE & Attention_check == "Digital Marketing Role")
+```
+
+```{r factors & numeric, warning=FALSE}
+fac_var <- c("Group", "item12_race", "dem2_gender", "dem3_ethnicity", "dem4_employment_status")
+new_df <- new_df %>% 
+  mutate(across(fac_var, as.factor))
+
+num_var <- c("Duration (in seconds)", "timing_page_submit_LP", "click_count_LP","item1_leader", "timing_leader", "click_count_leader", "item2_independent", "timing_independent", "click_count_independent", "item3_ambitious", "timing_ambitious", "click_count_ambitious", "item4_loyal", "timing_loyal", "click_count_loyal", "item5_sensitive", "timing_sensitive", "click_count_sensitive", "item6_warm", "timing_warm", "click_count_warm", "item7_compassionate", "timing_compassionate", "click_count_compassionate", "item8_adaptable", "timing_adaptable", "click_count_adaptable", "item9_sincere", "timing_sincere", "click_count_sincere", "item10_reliable", "timing_reliable", "click_count_reliable", "item11_truthful", "timing_truthful", "click_count_truthful", "timing_race", "click_count_race", "dem1_age")
+new_df <- new_df %>% 
+  mutate(across(num_var, as.numeric))
+```
+
+## Descriptive statistics
+```{r mean, sd & distribution}
+describe(new_df)
+```
+```{r aggregation}
+new_df <- new_df %>% 
+  mutate(masculinity = (item1_leader + item2_independent + item3_ambitious) / 3,
+         femininity = (item4_loyal + item5_sensitive + item6_warm + item7_compassionate) / 4,
+         neutral = (item8_adaptable + item9_sincere + item10_reliable + item11_truthful) / 4)
+
+aggregated_scale <- new_df[ , c("masculinity", "femininity", "neutral")]
+alpha(aggregated_scale)
+
+## all the aggregated scales highly correlate with the overall scale (highest corr neutral = 0.93)
+## so dropping neutral would have the most impact on alpha value, while dropping masculinity or feminity scale would still result in a fair alpha value (alpha >.8)
+
+new_df <- new_df %>% 
+  mutate(total_response_time = timing_leader + timing_independent + timing_ambitious + 
+           timing_loyal + timing_sensitive + timing_warm + timing_compassionate +
+           timing_adaptable + timing_sincere + timing_reliable + timing_truthful)
+```
+## Data Visualizations
+
+```{r group difference in response time, echo=TRUE}
+total_response_time_bygroup <- new_df %>% 
+  group_by(Group) %>% 
+  summarise(Mean = mean(total_response_time), Sd = sd(total_response_time))
+total_response_time_bygroup
+
+item_wise_response_time_bygroup <- new_df %>% 
+  group_by(Group) %>% 
+  summarise(Mean_timing_leader = mean(timing_leader), Sd_timing_leader = sd(timing_leader),
+            Mean_timing_independent = mean(timing_independent), Sd_timing_independent = sd(timing_independent),
+            Mean_timing_ambitious = mean(timing_ambitious), Sd_timing_ambitious = sd(timing_ambitious),
+            Mean_timing_loyal = mean(timing_loyal), Sd_timing_loyal = sd(timing_loyal),
+            Mean_timing_sensitive = mean(timing_sensitive), Sd_timing_sensitive = sd(timing_sensitive),
+            Mean_timing_warm = mean(timing_warm), Sd_timing_warm = sd(timing_warm),
+            Mean_timing_compassionate = mean(timing_compassionate), Sd_timing_compassionate = sd(timing_compassionate),
+            Mean_timing_adaptable = mean(timing_adaptable), Sd_timing_adaptable = sd(timing_adaptable),
+            Mean_timing_sincere = mean(timing_sincere), Sd_timing_sincere = sd(timing_sincere),
+            Mean_timing_reliable = mean(timing_reliable), Sd_timing_reliable = sd(timing_reliable),
+            Mean_timing_truthful = mean(timing_truthful), Sd_timing_truthful = sd(timing_truthful))
+item_wise_response_time_bygroup
+
+## histogram
+total_response_time_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean - Sd, ymax = Mean + Sd),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item1 leader
+item_wise_response_time_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_timing_leader)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_timing_leader - Sd_timing_leader, ymax = Mean_timing_leader + Sd_timing_leader),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+#item2 independent
+item_wise_response_time_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_timing_independent)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_timing_independent - Sd_timing_independent, ymax = Mean_timing_independent + Sd_timing_independent),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item3 ambitious
+item_wise_response_time_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_timing_ambitious)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_timing_ambitious - Sd_timing_ambitious, ymax = Mean_timing_ambitious + Sd_timing_ambitious),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item4 loyal
+item_wise_response_time_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_timing_loyal)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_timing_loyal - Sd_timing_loyal, ymax = Mean_timing_loyal + Sd_timing_loyal),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item5 sensitive
+item_wise_response_time_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_timing_sensitive)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_timing_sensitive - Sd_timing_sensitive, ymax = Mean_timing_sensitive + Sd_timing_sensitive),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item6 warm
+item_wise_response_time_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_timing_warm)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_timing_warm - Sd_timing_warm, ymax = Mean_timing_warm + Sd_timing_warm),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item7 compassionate
+item_wise_response_time_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_timing_compassionate)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_timing_compassionate - Sd_timing_compassionate, ymax = Mean_timing_compassionate + Sd_timing_compassionate),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item8 adaptable
+item_wise_response_time_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_timing_adaptable)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_timing_adaptable - Sd_timing_adaptable, ymax = Mean_timing_adaptable + Sd_timing_adaptable),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item9 sincere
+item_wise_response_time_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_timing_sincere)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_timing_sincere - Sd_timing_sincere, ymax = Mean_timing_sincere + Sd_timing_sincere),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item10 reliable
+item_wise_response_time_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_timing_reliable)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_timing_reliable - Sd_timing_reliable, ymax = Mean_timing_reliable + Sd_timing_reliable),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item11 truthful
+item_wise_response_time_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_timing_truthful)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_timing_truthful - Sd_timing_truthful, ymax = Mean_timing_truthful + Sd_timing_truthful),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+```{r average item score by group}
+mean_item_rating_bygroup <- new_df %>% 
+  group_by(Group) %>% 
+  summarise(Mean_item1_leader = mean(item1_leader), Sd_item1_leader = sd(item1_leader),
+            Mean_item2_independent = mean(item2_independent), Sd_item2_independent = sd(item2_independent),
+            Mean_item3_ambitious = mean(item3_ambitious), Sd_item3_ambitious = sd(item3_ambitious),
+            Mean_item4_loyal = mean(item4_loyal), Sd_item4_loyal = sd(item4_loyal),
+            Mean_item5_sensitive = mean(item5_sensitive), Sd_item5_sensitive = sd(item5_sensitive),
+            Mean_item6_warm = mean(item6_warm), Sd_item6_warm = sd(item6_warm),
+            Mean_item7_compassionate = mean(item7_compassionate), Sd_item7_compassionate = sd(item7_compassionate),
+            Mean_item8_adaptable = mean(item8_adaptable), Sd_item8_adaptable = sd(item8_adaptable),
+            Mean_item9_sincere = mean(item9_sincere), Sd_item9_sincere = sd(item9_sincere),
+            Mean_item10_reliable = mean(item10_reliable), Sd_item10_reliable = sd(item10_reliable),
+            Mean_item11_truthful = mean(item11_truthful), Sd_item11_truthful = sd(item11_truthful))
+mean_item_rating_bygroup
+
+## histogram
+mean_item_rating_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_item1_leader)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_item1_leader - Sd_item1_leader, ymax = Mean_item1_leader + Sd_item1_leader),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  ylim(0, 8) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item1 leader
+mean_item_rating_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_item2_independent)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_item2_independent - Sd_item2_independent, ymax = Mean_item2_independent + Sd_item2_independent),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  ylim(0, 8) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+#item2 independent
+mean_item_rating_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_item2_independent)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_item2_independent - Sd_item2_independent, ymax = Mean_item2_independent + Sd_item2_independent),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  ylim(0, 8) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item3 ambitious
+mean_item_rating_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_item3_ambitious)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_item3_ambitious - Sd_item3_ambitious, ymax = Mean_item3_ambitious + Sd_item3_ambitious),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  ylim(0, 8) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item4 loyal
+mean_item_rating_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_item4_loyal)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_item4_loyal - Sd_item4_loyal, ymax = Mean_item4_loyal + Sd_item4_loyal),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  ylim(0, 8) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item5 sensitive
+mean_item_rating_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_item5_sensitive)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_item5_sensitive - Sd_item5_sensitive, ymax = Mean_item5_sensitive + Sd_item5_sensitive),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  ylim(0, 8) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item6 warm
+mean_item_rating_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_item6_warm)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_item6_warm - Sd_item6_warm, ymax = Mean_item6_warm + Sd_item6_warm),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  ylim(0, 8) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item7 compassionate
+mean_item_rating_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_item7_compassionate)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_item7_compassionate - Sd_item7_compassionate, ymax = Mean_item7_compassionate + Sd_item7_compassionate),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  ylim(0, 8) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item8 adaptable
+mean_item_rating_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_item8_adaptable)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_item8_adaptable - Sd_item8_adaptable, ymax = Mean_item8_adaptable + Sd_item8_adaptable),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  ylim(0, 8) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item9 sincere
+mean_item_rating_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_item9_sincere)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_item9_sincere - Sd_item9_sincere, ymax = Mean_item9_sincere + Sd_item9_sincere),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  ylim(0, 8) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item10 reliable
+mean_item_rating_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_item10_reliable)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_item10_reliable - Sd_item10_reliable, ymax = Mean_item10_reliable + Sd_item10_reliable),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  ylim(0, 8) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# item11 truthful
+mean_item_rating_bygroup %>% 
+  ggplot(aes(x = Group, y = Mean_item11_truthful)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = Mean_item11_truthful - Sd_item11_truthful, ymax = Mean_item11_truthful + Sd_item11_truthful),
+                width = 0.2, position = position_dodge(width = 0.5)) +
+  ylim(0, 8) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+```{r click count}
+new_df <- new_df %>% 
+  mutate(sum_click_count = click_count_leader + click_count_independent + click_count_ambitious + click_count_loyal +
+                      click_count_sensitive + click_count_warm + click_count_compassionate + click_count_adaptable +
+                      click_count_sincere + click_count_reliable + click_count_truthful)
+
+Mean_total_click_count <- new_df %>% 
+  group_by(Group) %>% 
+  summarise(Mean =  mean(sum_click_count), Sd = sd(sum_click_count))
+Mean_total_click_count
+
+Mean_total_click_count %>% 
+  ggplot(aes(x = Group, y = Mean)) +
+  geom_col() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+Mean_click_count <- new_df %>% 
+  group_by(Group) %>% 
+  summarise(mean_cc_leader = mean(click_count_leader), sd_cc_leader = sd(click_count_leader),
+            mean_cc_independent = mean(click_count_independent), sd_cc_independent = sd(click_count_independent),
+            mean_cc_ambitious = mean(click_count_ambitious), sd_cc_ambitious = sd(click_count_ambitious),
+            mean_cc_loyal = mean(click_count_loyal), sd_cc_loyal = sd(click_count_loyal),
+            mean_cc_sensitive = mean(click_count_sensitive), sd_cc_sensitive = sd(click_count_sensitive),
+            mean_cc_warm = mean(click_count_warm), sd_cc_warm = sd(click_count_warm),
+            mean_cc_compassionate = mean(click_count_compassionate), sd_cc_compassionate = sd(click_count_compassionate),
+            mean_cc_adaptable = mean(click_count_adaptable), sd_cc_adaptable = sd(click_count_adaptable),
+            mean_cc_sincere = mean(click_count_sincere), sd_cc_sincere = sd(click_count_sincere),
+            mean_cc_reliable = mean(click_count_reliable), sd_cc_reliable = sd(click_count_reliable),
+            mean_cc_truthful = mean(click_count_truthful), sd_cc_truthful = sd(click_count_truthful))
+
+Mean_click_count
+```
+## Hypothesis Testing
+
+```{r Hypothesis 1}
+H1_m <- aov(masculinity ~ Group, data = new_df)
+summary(H1_m)
+# ANOVA indicates no difference among groups but still running Post-hoc
+TukeyHSD(H1_m)
+
+H1_f <- aov(femininity ~ Group, data = new_df)
+summary(H1_f)
+TukeyHSD(H1_f)
+```
+```{r Hypothesis 2}
+H2 <- manova(cbind(masculinity, femininity) ~ Group, data = new_df)
+summary(H2)
+```
+
+```{r Hypothesis 3: testing for response time}
+## masculinity & femininity ratings
+H3_m <- aov(masculinity ~ Group, data = new_df)
+summary(H3_m)
+# ANOVA indicates no difference among groups but still running Post-hoc
+TukeyHSD(H3_m)
+
+H3_f <- aov(femininity ~ Group, data = new_df)
+summary(H3_f)
+
+## total response time difference
+total_response_time_anova <- aov(total_response_time ~ Group, data = new_df)
+summary(total_response_time_anova)
+
+## item-wise response time difference
+item1_response_time_aonva <- aov(timing_leader ~ Group, data = new_df)
+summary(item1_response_time_aonva)
+
+item2_response_time_aonva <- aov(timing_independent ~ Group, data = new_df)
+summary(item2_response_time_aonva)
+
+item3_response_time_aonva <- aov(timing_ambitious ~ Group, data = new_df)
+summary(item3_response_time_aonva)
+
+item4_response_time_aonva <- aov(timing_loyal ~ Group, data = new_df)
+summary(item4_response_time_aonva)
+
+item5_response_time_aonva <- aov(timing_sensitive ~ Group, data = new_df)
+summary(item5_response_time_aonva)
+
+item6_response_time_aonva <- aov(timing_warm ~ Group, data = new_df)
+summary(item6_response_time_aonva)
+
+item7_response_time_aonva <- aov(timing_compassionate ~ Group, data = new_df)
+summary(item7_response_time_aonva)
+
+item8_response_time_aonva <- aov(timing_adaptable ~ Group, data = new_df)
+summary(item8_response_time_aonva)
+
+item9_response_time_aonva <- aov(timing_sincere ~ Group, data = new_df)
+summary(item9_response_time_aonva)
+
+item10_response_time_aonva <- aov(timing_reliable ~ Group, data = new_df)
+summary(item10_response_time_aonva)
+
+item11_response_time_aonva <- aov(timing_truthful ~ Group, data = new_df)
+summary(item11_response_time_aonva)
+
+# Hypothesis 3 was not supported
+# H3a: No difference in masculinity or femininity rating among groups
+# H3b: No difference in response time
+```
+
+```{r Resgression Models for response time, include=FALSE}
+lm_df <- new_df %>% 
+  mutate(eth = as.factor(dem3_ethnicity),
+         emp_st = as.factor(dem4_employment_status),
+         tot_res_time = total_response_time,
+         age = dem1_age,
+         gender = dem2_gender)
+
+model <- lm(tot_res_time ~ Group * age * gender * eth * emp_st, data = lm_df)
+summary(model)
+
+# Include = FALSE as the report becomes super long and hard to read if this model runs
+# The only significant interaction in this model = Caucasian : Self-employed * (.05)
+
+```
+
+```{r More Regression Models}
+model1 <- lm(tot_res_time ~ Group * age * gender, data = lm_df)
+summary(model1)
+
+model2 <- lm(tot_res_time ~ Group * eth * emp_st, data = lm_df)
+summary(model2)
+
+# There are quite a few significant interactions in model2
+```
+
+## Additional Analyses
+```{r Grouping into gender & race}
+
+# Recoding
+new_df <- new_df %>%
+  mutate(Gender = case_when(
+    str_detect(Group, "Woman$") ~ "Female",
+    str_detect(Group, "Man$") ~ "Male"
+  ))
+
+new_df <- new_df %>% 
+  mutate(Race = case_when(
+    str_detect(Group, "^Asian") ~ "Asian",
+    str_detect(Group, "^Black") ~ "Black",
+    str_detect(Group, "^White") ~ "White",
+    str_detect(Group, "^Blight") ~ "Biracial",
+    str_detect(Group, "^Wasian") ~ "Biracial"
+  ))
+
+# Anova
+anova_masculinity <- aov(masculinity ~ Race + Gender, data = new_df)
+summary(anova_masculinity)
+
+anova_femininity <- aov(femininity ~ Race + Gender, data = new_df)
+summary(anova_femininity)
+
+# Still not significant but the p = .08 for Race
+TukeyHSD(anova_femininity)
+  
+```
+```{r correlation matrix}
+scales <- new_df[ , c("item1_leader", "item2_independent", "item3_ambitious", "item4_loyal", "item5_sensitive",
+                      "item6_warm", "item7_compassionate", "item8_adaptable", "item9_sincere", "item10_reliable",
+                      "item11_truthful")]
+corr_matrix <- cor(scales, method = "pearson")
+corr_matrix
+
+ggcorrplot(corr_matrix, method = 'square', 
+           type = 'lower',
+           colors = c("red", "white", "blue"))
+```
+
+# Hypothesis one
+# Perform ANOVA tests for each hypothesis
+
+```{r ANOVA with all groups}
+# H1a: White men (neutral) will be rated more neutrally on both perceived masculinity and femininity compared to other groups (i.e. Black men, Asian men, Biracial men)
+
+#ANOVA with all groups
+
+anova_h1a <- aov(masculinity ~ Group, data = new_df)
+summary(anova_h1a)
+posthoc_h1a <- TukeyHSD(anova_h1a)
+print(posthoc_h1a)
+
+anova_h1a <- aov(femininity ~ Group, data = new_df)
+summary(anova_h1a)
+
+## no group differences in masculinity or femininity
+```
+
+```{r Anova with men only}
+#ANOVA with men only
+library(dplyr)
+# Add a new column "Group_Gender" based on the "Group" column
+new_df <- new_df %>%
+  mutate(Group_Gender = case_when(
+    grepl("_Man", Group) ~ "Man",
+    grepl("_Woman", Group) ~ "Woman",
+    TRUE ~ "Other"
+  ))
+ 
+# Filter the dataframe to include only the "Men" groups
+men_groups_df <- new_df %>%
+  filter(Group_Gender == "Man")
+
+# Perform a one-way ANOVA for masculinity
+anova_men <- aov(masculinity ~ Group, data = men_groups_df)
+summary(anova_men)
+anova_men_item1 <- aov(item1_leader ~ Group, data = men_groups_df)
+summary(anova_men_item1)
+# Perform Tukey post-hoc test for the one-way ANOVA
+posthoc_men_item1 <- TukeyHSD(anova_men_item1)
+print(posthoc_men_item1)
+## no group differences in masculinitiy between males. anova shows group differences in item 1 (leadership perceptions) but post hoc test did not show any group differences.
+##no group differences were found for any of the other items 
+
+# Perform a one-way ANOVA for femininity
+anova_men <- aov(femininity ~ Group, data = men_groups_df)
+summary(anova_men)
+
+## no group differences in femininity between males. 
+
+# Perform Tukey post-hoc test for the one-way ANOVA
+posthoc_men <- TukeyHSD(anova_men)
+print(posthoc_men)
+```
+
+
+```{r H1b}
+
+# H1b: White women (neutral) will be rated more neutrally on both perceived femininity and masculinity compared to other groups (i.e. Black women, Asian women, Biracial women)
+
+# Filter the dataframe to include only the "Women" groups
+women_groups_df <- new_df %>%
+  filter(Group_Gender == "Woman")
+# Perform a one-way ANOVA for masculinity and femininity
+anova_women <- aov(masculinity ~ Group, data = women_groups_df)
+summary(anova_women)
+
+anova_women <- aov(femininity ~ Group, data = women_groups_df)
+summary(anova_women)
+#per item
+anova_women_item1 <- aov(item1_leader~ Group, data = women_groups_df)
+summary(anova_women_item1)
+##no group differences in masculinity or femininity between women. No differences were found for any of the items separately
+```
+
+
+```{r H1 Visualizations}
+# Boxplot for masculinity
+ggplot(new_df, aes(x = Group, y = masculinity)) +
+  geom_boxplot() +
+  labs(title = "Masculinity Scores by Group")
+
+# Boxplot for femininity
+ggplot(new_df, aes(x = Group, y = femininity)) +
+  geom_boxplot() +
+  labs(title = "Femininity Scores by Group")
+# Bar plot for mean masculinity scores by group
+ggplot(new_df, aes(x = Group, y = masculinity)) +
+  geom_bar(stat = "summary", fun = "mean") +
+  labs(title = "Mean Masculinity Scores by Group")
+
+# Bar plot for mean femininity scores by group
+ggplot(new_df, aes(x = Group, y = femininity)) +
+  geom_bar(stat = "summary", fun = "mean") +
+  labs(title = "Mean Femininity Scores by Group")
+```
+
+
+# Hypothesis two
+
+```{r H2 Male}
+#H2a: Blight_man and Blight_woman will be rated more closely to Black_man and Black_woman compared to White men and women in terms of masculinity and femininity.
+
+# Masculinity: Compare Blight_man and Black_man with White_man
+blight_man_masculinity <- subset(new_df, Group == "Blight_Man")$masculinity
+black_man_masculinity <- subset(new_df, Group == "Black_Man")$masculinity
+white_man_masculinity <- subset(new_df, Group == "White_Man")$masculinity
+
+# Perform t-tests
+t.test(blight_man_masculinity, black_man_masculinity)  # Blight_man vs. Black_man
+t.test(blight_man_masculinity, white_man_masculinity)  # Blight_man vs. White_man
+
+# Femininity: Compare Blight_man and Black_man with White_man
+blight_man_femininity <- subset(new_df, Group == "Blight_Man")$femininity
+black_man_femininity <- subset(new_df, Group == "Black_Man")$femininity
+white_man_femininity <- subset(new_df, Group == "White_Man")$femininity
+
+# Perform t-tests
+t.test(blight_man_femininity, black_man_femininity)  # Blight_man vs. Black_man
+t.test(blight_man_femininity, white_man_femininity)  # Blight_man vs. White_man
+##Given that neither comparison is statistically significant, we cannot definitively conclude that Blight_man is closer to Black_man or White_man in terms of masculinity or femininity based solely on these test results.
+
+```
+
+
+```{r H2 male Visualizations}
+# Create a data frame for the means
+means_df <- data.frame(
+  Group = c("Blight_man", "Black_man", "White_man"),
+  Masculinity = c(mean(blight_man_masculinity), mean(black_man_masculinity), mean(white_man_masculinity)),
+  Femininity = c(mean(blight_man_femininity), mean(black_man_femininity), mean(white_man_femininity))
+)
+
+# Create a grouped bar chart for masculinity
+ggplot(means_df, aes(x = Group, y = Masculinity, fill = Group)) +
+  geom_bar(stat = "identity", position = position_dodge(width = 0.8)) +
+  labs(
+    title = "Mean Masculinity Scores by Group (Blight_man, Black_man, White_man)",
+    x = "Group",
+    y = "Mean Masculinity"
+  ) +
+  theme_minimal()
+
+# Create a grouped bar chart for femininity
+ggplot(means_df, aes(x = Group, y = Femininity, fill = Group)) +
+  geom_bar(stat = "identity", position = position_dodge(width = 0.8)) +
+  labs(
+    title = "Mean Femininity Scores by Group (Blight_man, Black_man, White_man)",
+    x = "Group",
+    y = "Mean Femininity"
+  ) +
+  theme_minimal()
+```
+
+```{r H2 male continued}
+# Masculinity: Compare Wasian_man and Asian_man with White_man
+wasian_man_masculinity <- subset(new_df, Group == "Wasian_Man")$masculinity
+asian_man_masculinity <- subset(new_df, Group == "Asian_Man")$masculinity
+white_man_masculinity <- subset(new_df, Group == "White_Man")$masculinity
+t.test(wasian_man_masculinity, asian_man_masculinity)  # Blight_man vs. Black_man
+t.test(wasian_man_masculinity, white_man_masculinity)  # Blight_man vs. White_man
+
+# Femininity: Compare Wasian_man and Asian_man with White_man
+wasian_man_femininity <- subset(new_df, Group == "Wasian_Man")$femininity
+asian_man_femininity <- subset(new_df, Group == "Asian_Man")$femininity
+white_man_femininity <- subset(new_df, Group == "White_Man")$femininity
+
+# Perform t-tests
+t.test(wasian_man_femininity, asian_man_femininity)  # Wasian_man vs. Asian_man
+t.test(wasian_man_femininity, white_man_femininity)  # Wasian_man vs. White_man
+```
+
+
+
+```{r H2 male continued..}
+# Create a data frame for the means
+means_df_femininity <- data.frame(
+  Group = c("Wasian_man", "Asian_man", "White_man"),
+  Femininity = c(mean(wasian_man_femininity), mean(asian_man_femininity), mean(white_man_femininity))
+)
+
+# Create a grouped bar chart for femininity
+library(ggplot2)
+
+ggplot(means_df_femininity, aes(x = Group, y = Femininity, fill = Group)) +
+  geom_bar(stat = "identity", position = position_dodge(width = 0.8)) +
+  labs(
+    title = "Mean Femininity Scores by Group (Wasian_man, Asian_man, White_man)",
+    x = "Group",
+    y = "Mean Femininity"
+  ) +
+  theme_minimal()
+```
+
+```{r H2 female}
+##H2 for female groups:
+# Masculinity: Compare Blight_woman and Black_woman with White_woman
+blight_woman_masculinity <- subset(new_df, Group == "Blight_Woman")$masculinity
+black_woman_masculinity <- subset(new_df, Group == "Black_Woman")$masculinity
+white_woman_masculinity <- subset(new_df, Group == "White_Woman")$masculinity
+
+# Perform t-tests
+t.test(blight_woman_masculinity, black_woman_masculinity)  # Blight_woman vs. Black_woman
+t.test(blight_woman_masculinity, white_woman_masculinity)  # Blight_woman vs. White_woman
+
+# Femininity: Compare Blight_woman and Black_woman with White_woman
+blight_woman_femininity <- subset(new_df, Group == "Blight_Woman")$femininity
+black_woman_femininity <- subset(new_df, Group == "Black_Woman")$femininity
+white_woman_femininity <- subset(new_df, Group == "White_Woman")$femininity
+
+# Perform t-tests
+t.test(blight_woman_femininity, black_woman_femininity)  # Blight_woman vs. Black_woman
+t.test(blight_woman_femininity, white_woman_femininity)  # Blight_woman vs. White_woman
+```
+
+
+```{r H2 female visualizations}
+# Create a data frame for the means
+means_df_women <- data.frame(
+  Group = c("Blight_woman", "Black_woman", "White_woman"),
+  Masculinity = c(mean(blight_woman_masculinity), mean(black_woman_masculinity), mean(white_woman_masculinity)),
+  Femininity = c(mean(blight_woman_femininity), mean(black_woman_femininity), mean(white_woman_femininity))
+)
+
+# Create a grouped bar chart for masculinity
+
+ggplot(means_df_women, aes(x = Group, y = Masculinity, fill = Group)) +
+  geom_bar(stat = "identity", position = position_dodge(width = 0.8)) +
+  labs(
+    title = "Mean Masculinity Scores by Group (Blight_woman, Black_woman, White_woman)",
+    x = "Group",
+    y = "Mean Masculinity"
+  ) +
+  theme_minimal()
+
+# Create a grouped bar chart for femininity
+ggplot(means_df_women, aes(x = Group, y = Femininity, fill = Group)) +
+  geom_bar(stat = "identity", position = position_dodge(width = 0.8)) +
+  labs(
+    title = "Mean Femininity Scores by Group (Blight_woman, Black_woman, White_woman)",
+    x = "Group",
+    y = "Mean Femininity"
+  ) +
+  theme_minimal()
+```
+
+
+# Hypothesis three
+
+```{r H3}
+#H3b: The time taken for participants to rate the masculinity and femininity of biracial Black-White and Asian-White profiles will be significantly longer than the time taken to rate monoracial Black, White, and Asian profiles.
+# Filter the dataframe to include only the relevant groups
+response_time_df <- new_df %>%
+  filter(Group %in% c("Blight_Man", "Blight_Woman", "Wasian_Man", "Wasian_Woman",
+                      "Black_Man", "Black_Woman", "White_Man", "White_Woman",
+                      "Asian_Man", "Asian_Woman"))
+
+# Perform an analysis of variance (ANOVA) for response times
+response_time_anova <- aov(total_response_time ~ Group, data = response_time_df)
+
+# Check the summary of the ANOVA
+summary(response_time_anova)
+
+# Perform a post-hoc test (e.g., Tukey HSD) to identify specific group differences
+posthoc_response_time <- TukeyHSD(response_time_anova)
+print(posthoc_response_time)
+
+##no group differences in total response time.
+
+#Testing for response time per item:
+
+# Filter the dataframe to include only the relevant groups and response times for item1_leader
+response_time_item1_df <- new_df %>%
+  filter(Group %in% c("Blight_Man", "Blight_Woman", "Wasian_Man", "Wasian_Woman",
+                      "Black_Man", "Black_Woman", "White_Man", "White_Woman",
+                      "Asian_Man", "Asian_Woman")) %>%
+  dplyr::select(Group, timing_leader)
+
+# Perform an analysis of variance (ANOVA) for response times of item1_leader
+response_time_item1_anova <- aov(timing_leader ~ Group, data = response_time_item1_df)
+# Check the summary of the ANOVA
+summary(response_time_item1_anova)
+
+# Filter the dataframe to include only the relevant groups and response times for item2_independent
+response_time_item2_df <- new_df %>%
+  filter(Group %in% c("Blight_Man", "Blight_Woman", "Wasian_Man", "Wasian_Woman",
+                      "Black_Man", "Black_Woman", "White_Man", "White_Woman",
+                      "Asian_Man", "Asian_Woman")) %>%
+  dplyr::select(Group, timing_independent)
+
+# Perform an analysis of variance (ANOVA) for response times of item2_independent
+response_time_item2_anova <- aov(timing_independent ~ Group, data = response_time_item2_df)
+
+# Check the summary of the ANOVA
+summary(response_time_item2_anova)
+
+# Filter the dataframe to include only the relevant groups and response times for item3_ambitious
+response_time_item3_df <- new_df %>%
+  filter(Group %in% c("Blight_Man", "Blight_Woman", "Wasian_Man", "Wasian_Woman",
+                      "Black_Man", "Black_Woman", "White_Man", "White_Woman",
+                      "Asian_Man", "Asian_Woman")) %>%
+  dplyr::select(Group, timing_ambitious)
+
+# Perform an analysis of variance (ANOVA) for response times of item3_ambitious
+response_time_item3_anova <- aov(timing_ambitious ~ Group, data = response_time_item3_df)
+
+# Check the summary of the ANOVA
+summary(response_time_item3_anova)
+
+# Filter the dataframe to include only the relevant groups and response times for item4_loyal
+response_time_item4_df <- new_df %>%
+  filter(Group %in% c("Blight_Man", "Blight_Woman", "Wasian_Man", "Wasian_Woman",
+                      "Black_Man", "Black_Woman", "White_Man", "White_Woman",
+                      "Asian_Man", "Asian_Woman")) %>%
+  dplyr::select(Group, timing_loyal)
+
+# Perform an analysis of variance (ANOVA) for response times of item4_loyal
+response_time_item4_anova <- aov(timing_loyal ~ Group, data = response_time_item4_df)
+
+# Check the summary of the ANOVA
+summary(response_time_item4_anova)
+
+# Filter the dataframe to include only the relevant groups and response times for item5_sensitive
+response_time_item5_df <- new_df %>%
+  filter(Group %in% c("Blight_Man", "Blight_Woman", "Wasian_Man", "Wasian_Woman",
+                      "Black_Man", "Black_Woman", "White_Man", "White_Woman",
+                      "Asian_Man", "Asian_Woman")) %>%
+  dplyr::select(Group, timing_sensitive)
+
+# Perform an analysis of variance (ANOVA) for response times of item5_sensitive
+response_time_item5_anova <- aov(timing_sensitive ~ Group, data = response_time_item5_df)
+
+# Check the summary of the ANOVA
+summary(response_time_item5_anova)
+
+# Filter the dataframe to include only the relevant groups and response times for item6_warm
+response_time_item6_df <- new_df %>%
+  filter(Group %in% c("Blight_Man", "Blight_Woman", "Wasian_Man", "Wasian_Woman",
+                      "Black_Man", "Black_Woman", "White_Man", "White_Woman",
+                      "Asian_Man", "Asian_Woman")) %>%
+  dplyr::select(Group, timing_warm)
+
+# Perform an analysis of variance (ANOVA) for response times of item6_warm
+response_time_item6_anova <- aov(timing_warm ~ Group, data = response_time_item6_df)
+
+# Check the summary of the ANOVA
+summary(response_time_item6_anova)
+
+# Filter the dataframe to include only the relevant groups and response times for item7_ompassionate
+response_time_item7_df <- new_df %>%
+  filter(Group %in% c("Blight_Man", "Blight_Woman", "Wasian_Man", "Wasian_Woman",
+                      "Black_Man", "Black_Woman", "White_Man", "White_Woman",
+                      "Asian_Man", "Asian_Woman")) %>%
+  dplyr::select(Group, timing_compassionate)
+
+# Perform an analysis of variance (ANOVA) for response times of item7_compassionate
+response_time_item7_anova <- aov(timing_compassionate ~ Group, data = response_time_item7_df)
+
+# Check the summary of the ANOVA
+summary(response_time_item7_anova)
+
+##no group differences in response time for any of the items (both masculine and feminine)
+```
+
+
+##Hypothesis 4:
+```{r H4}
+#H4a: Participants will be more likely to rapidly categorize biracial individuals (i.e. Blight_man, Blight_woman, Wasian_man, Wasian_Woman) as Monoracial than as Biracial. 
+
+##First, Black groups
+# Filter the dataframe to include only Blight_Man and Blight_Woman and response times
+blight_response_time_df <- new_df %>%
+  filter(Group %in% c("Blight_Man", "Blight_Woman")) %>%
+  dplyr::select(Group, item12_race, timing_race)
+
+# Define the categories for "Black (Monoracial)" and "Biracial (Black-White)"
+monoracial_category <- "Black (Monoracial)"
+biracial_category <- "Biracial (Black-White)"
+
+# Separate response times for the two categories
+monoracial_response_time <- blight_response_time_df %>%
+  filter(item12_race == monoracial_category) %>%
+  dplyr::select(timing_race)
+
+biracial_response_time <- blight_response_time_df %>%
+  filter(item12_race == biracial_category) %>%
+  dplyr::select(timing_race)
+
+# Perform t-tests to compare response times
+t_test_blight_man_monoracial_vs_biracial <- t.test(monoracial_response_time$timing_race, biracial_response_time$timing_race)
+
+# Print the results of the t-tests
+print(t_test_blight_man_monoracial_vs_biracial)
+
+##participants took significantly less time to categorize Blight_Man and Blight_Woman as "Black (Monoracial)" compared to "Biracial (Black-White)."
+```
+
+
+```{r Asian Groups:}
+## Asian groups:
+# Filter the dataframe to include only Wasian_Man and Wasian_Woman and response times
+wasian_response_time_df <- new_df %>%
+  filter(Group %in% c("Wasian_Man", "Wasian_Woman")) %>%
+  dplyr::select(Group, item12_race, timing_race)
+
+# Define the categories for "Asian (Monoracial)" and "Biracial (Asian-White)"
+monoracial_category <- "Asian (Monoracial)"
+biracial_category <- "Biracial (Asian-White)"
+
+# Separate response times for the two categories
+monoracial_response_time <- wasian_response_time_df %>%
+  filter(item12_race == monoracial_category) %>%
+  dplyr::select(timing_race)
+
+biracial_response_time <- wasian_response_time_df %>%
+  filter(item12_race == biracial_category) %>%
+  dplyr::select(timing_race)
+
+# Perform t-tests to compare response times
+t_test_wasian_monoracial_vs_biracial <- t.test(monoracial_response_time$timing_race, biracial_response_time$timing_race)
+
+# Print the results of the t-tests
+print(t_test_wasian_monoracial_vs_biracial)
+
+##participants took significantly less time to categorize individuals as "Asian (Monoracial)" compared to "Biracial (Asian-White)" 
+#visualization
+```
+
+```{r Black Groups}
+##For Black groups:
+# Load the ggplot2 library for data visualization
+library(ggplot2)
+
+# Create separate data frames for monoracial and biracial response times
+monoracial_df <- data.frame(
+  Category = "Black (Monoracial)",
+  ResponseTime = monoracial_response_time$timing_race
+)
+
+biracial_df <- data.frame(
+  Category = "Biracial (Black-White)",
+  ResponseTime = biracial_response_time$timing_race
+)
+
+# Combine the data frames
+response_time_df <- rbind(monoracial_df, biracial_df)
+
+# Create a box plot
+ggplot(response_time_df, aes(x = Category, y = ResponseTime, fill = Category)) +
+  geom_boxplot() +
+  labs(
+    title = "Response Times for Categorizing Blight Individuals",
+    x = "Category",
+    y = "Response Time"
+  ) +
+  theme_minimal()
+
+```
+
+```{r}
+##for Asian groups
+
+# Create separate data frames for monoracial and biracial response times
+monoracial_df <- data.frame(
+  Category = "Asian (Monoracial)",
+  ResponseTime = monoracial_response_time$timing_race
+)
+
+biracial_df <- data.frame(
+  Category = "Biracial (Asian-White)",
+  ResponseTime = biracial_response_time$timing_race
+)
+
+# Combine the data frames
+response_time_df <- rbind(monoracial_df, biracial_df)
+
+# Create a box plot
+ggplot(response_time_df, aes(x = Category, y = ResponseTime, fill = Category)) +
+  geom_boxplot() +
+  labs(
+    title = "Response Times for Categorizing Wasian Individuals",
+    x = "Category",
+    y = "Response Time"
+  ) +
+  theme_minimal()
+```
+
+
+## Manipulation check
+```{r Manipulation check}
+# Create a contingency table
+contingency_table <- table(new_df$Group, new_df$item12_race)
+
+# Perform a chi-squared test of independence
+chi_squared_test <- chisq.test(contingency_table)
+
+# Print the results of the chi-squared test
+print(chi_squared_test)
+
+##participants' categorizations in the 'item12_race' column were not independent of their assigned groups. For example, participants were more likely to categorize individuals in the 'Blight_Man' and 'Blight_Woman' groups as 'Biracial (Black-White)' rather than 'Black (Monoracial).'
+
+#Counts for each group
+## Blight_woman
+# Filter the dataframe to include only the "Blight_Woman" group
+blight_woman_responses <- subset(new_df, Group == "Blight_Woman")
+# Create a table of responses for the "item12_race" column
+response_counts <- table(blight_woman_responses$item12_race)
+# Convert the table to a data frame
+response_counts_df <- as.data.frame(response_counts)
+# Rename the columns for better clarity
+colnames(response_counts_df) <- c("Response", "Count")
+# Print the breakdown of response counts
+print(response_counts_df)
+
+##surprisingly, most blight-women were categorized as Biracial (Asian-White) (26) or White (23). Safe to say manipulation did not work here.
+
+## Blight_man
+# Filter the dataframe to include only the "Blight_Woman" group
+blight_man_responses <- subset(new_df, Group == "Blight_Man")
+# Create a table of responses for the "item12_race" column
+response_counts <- table(blight_man_responses$item12_race)
+# Convert the table to a data frame
+response_counts_df <- as.data.frame(response_counts)
+# Rename the columns for better clarity
+colnames(response_counts_df) <- c("Response", "Count")
+# Print the breakdown of response counts
+print(response_counts_df)
+##Most blight-men were categorized as Black monoracial (38) or Biracial Black-White (22). Manipulation did not work, but this kind of makes sense in support of Hypodescent theory.
+
+## Wasian_man
+# Filter the dataframe to include only the "Wasian_Man" group
+wasian_man_responses <- subset(new_df, Group == "Wasian_Man")
+# Create a table of responses for the "item12_race" column
+response_counts <- table(wasian_man_responses$item12_race)
+# Convert the table to a data frame
+response_counts_df <- as.data.frame(response_counts)
+# Rename the columns for better clarity
+colnames(response_counts_df) <- c("Response", "Count")
+# Print the breakdown of response counts
+print(response_counts_df)
+##Most wasian-men were categorized as Asian monoracial (29) or Biracial Asian-White (28). 
+
+## Wasian_woman
+# Filter the dataframe to include only the "Wasian_Woman" group
+wasian_woman_responses <- subset(new_df, Group == "Wasian_Woman")
+# Create a table of responses for the "item12_race" column
+response_counts <- table(wasian_woman_responses$item12_race)
+# Convert the table to a data frame
+response_counts_df <- as.data.frame(response_counts)
+# Rename the columns for better clarity
+colnames(response_counts_df) <- c("Response", "Count")
+# Print the breakdown of response counts
+print(response_counts_df)
+
+##Most wasian-women were categorized as Asian monoracial (31) or Biracial Asian-White (25). 
+```
+
+
