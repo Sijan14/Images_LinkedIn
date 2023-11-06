@@ -271,6 +271,21 @@ new_df <- new_df %>%
            timing_loyal + timing_sensitive + timing_warm + timing_compassionate +
            timing_adaptable + timing_sincere + timing_reliable + timing_truthful)
 ```
+## correlation matrix
+```{r}
+install.packages("apaTables")
+library(apaTables)
+
+corr_agg <- cor(aggregated_scale, method = "pearson", use = "complete.obs")
+
+apa.cor.table(aggregated_scale,
+              filename = "correlation_table_2.doc",
+              table.number = 1)
+
+```
+
+
+
 ## Data Visualizations
 
 ```{r group difference in response time, echo=TRUE}
